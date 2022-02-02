@@ -1,13 +1,7 @@
 import { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import FormInput from "./components/FormInput";
+import ListItem from "./components/ListItem";
 export default function App() {
   const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
@@ -28,23 +22,16 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.form}>
-        <TextInput
-          placeholder="Enter Goal"
-          style={styles.input}
-          value={text}
-          onChangeText={textInputHandler}
-        />
-        <Button title="Add" onPress={setGoalHandler} />
-      </View>
+      <FormInput
+        textInputHandler={textInputHandler}
+        text={text}
+        setGoalHandler={setGoalHandler}
+      />
+
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={goals}
-        renderItem={(itemData) => (
-          <View style={styles.listItem}>
-            <Text>{itemData.item.value}</Text>
-          </View>
-        )}
+        renderItem={(itemData) => <ListItem item={itemData.item.value} />}
       />
     </View>
   );
@@ -55,26 +42,5 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     paddingLeft: 20,
     paddingRight: 20,
-  },
-
-  form: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  input: {
-    width: "80%",
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    padding: 10,
-  },
-
-  listItem: {
-    padding: 10,
-    marginTop: 5,
-    backgroundColor: "#ccc",
-    borderColor: "black",
-    borderWidth: 1,
   },
 });
