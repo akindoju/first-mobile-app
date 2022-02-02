@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, Text, View, FlatList, Button } from "react-native";
 import FormInput from "./components/FormInput";
 import ListItem from "./components/ListItem";
+
 export default function App() {
   const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const textInputHandler = (enteredText) => {
     setText(enteredText);
@@ -18,7 +20,10 @@ export default function App() {
         value: text,
       },
     ]);
+    setIsModalOpen(false);
+    setText("");
   };
+
   const removeGoalHandler = (goalId) => {
     setGoals((currentGoals) =>
       currentGoals.filter((goal) => goal.id !== goalId)
@@ -27,10 +32,13 @@ export default function App() {
 
   return (
     <View style={styles.screen}>
+      <Button title="Add New Goal" onPress={() => setIsModalOpen(true)} />
       <FormInput
         textInputHandler={textInputHandler}
         text={text}
         setGoalHandler={setGoalHandler}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
       />
 
       <FlatList
